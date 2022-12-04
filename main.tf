@@ -1,10 +1,25 @@
+locals {
+  builtin_actions = {
+    redirect_to_https = {
+      type = "redirect"
+      options = {
+        port = "443"
+        protocol = "HTTPS"
+      }
+    }
+  }
+  selected_builtin_actions_count = length(var.builtin_actions)
+  selected_builtin_actions = {for l in var.builtin_actions : (1 + index(var.builtin_actions, l)) => local.builtin_actions[l]}
+  extra_actions = {for k, v in var.actions : (k + local.selected_builtin_actions_count) => v}
+}
+
 resource "aws_alb_listener" "this" {
   load_balancer_arn = var.load_balancer.arn
   port = var.port
   protocol = var.protocol
   certificate_arn = var.certificate == null ? null : var.certificate.arn
   dynamic "default_action" {
-    for_each = local.actions
+    for_each = merge(local.selected_builtin_actions, local.extra_actions)
     content {
       order = default_action.key
       type = default_action.value["type"]
