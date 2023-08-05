@@ -5,13 +5,16 @@ variable "load_balancer" {
 }
 
 variable "port" {
-  type = number
-  default = "80"
+  type     = number
+  default  = "80"
+  nullable = false
 }
 
 variable "protocol" {
-  type = string
-  default = "HTTP"
+  type     = string
+  default  = "HTTP"
+  nullable = false
+
 }
 
 variable "certificate" {
@@ -28,7 +31,7 @@ variable "actions" {
 }
 
 variable "builtin_actions" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
