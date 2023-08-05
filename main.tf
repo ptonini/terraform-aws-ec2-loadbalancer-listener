@@ -42,7 +42,7 @@ resource "aws_lb_listener" "this" {
 resource "aws_lb_listener_rule" "this" {
   for_each     = var.rules
   priority     = each.key
-  listener_arn = aws_alb_listener.this.arn
+  listener_arn = aws_lb_listener.this.arn
   action {
     type = each.value["type"]
     dynamic "redirect" {
