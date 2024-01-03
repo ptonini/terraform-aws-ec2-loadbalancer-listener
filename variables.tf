@@ -7,11 +7,13 @@ variable "load_balancer" {
 variable "port" {
   type    = number
   default = "80"
+  nullable = false
 }
 
 variable "protocol" {
   type    = string
   default = "HTTP"
+  nullable = false
 }
 
 variable "certificate" {
@@ -19,6 +21,7 @@ variable "certificate" {
     arn = optional(string)
   })
   default = {}
+  nullable = false
 }
 
 variable "actions" {
@@ -35,6 +38,7 @@ variable "actions" {
     }))
   }))
   default = {}
+  nullable = false
 }
 
 variable "rules" {
@@ -53,4 +57,5 @@ variable "rules" {
     }))
   }))
   default = {}
+  nullable = false
 }
