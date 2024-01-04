@@ -24,11 +24,11 @@ variable "certificate" {
   nullable = false
 }
 
-variable "actions" {
+variable "default_actions" {
   type = map(object({
     type             = string
     target_group_arn = optional(string)
-    redirect_options = optional(object({
+    redirect = optional(object({
       host        = optional(string)
       path        = optional(string)
       port        = optional(string)
@@ -44,7 +44,7 @@ variable "actions" {
 variable "rules" {
   type = map(object({
     type = string
-    redirect_options = optional(object({
+    redirect = optional(object({
       host        = optional(string)
       path        = optional(string)
       port        = optional(string)

@@ -5,14 +5,14 @@ resource "aws_lb_listener" "this" {
   certificate_arn   = var.certificate.arn
 
   dynamic "default_action" {
-    for_each = var.actions
+    for_each = var.default_actions
     content {
       order            = default_action.key
       type             = default_action.value.type
       target_group_arn = default_action.value.type == "forward" ? default_action.value.target_group_arn : null
 
       dynamic "redirect" {
-        for_each = default_action.value.redirect_options[*]
+        for_each = default_action.value.redirect[*]
         content {
           host        = redirect.value.host
           path        = redirect.value.path
@@ -35,7 +35,7 @@ resource "aws_lb_listener_rule" "this" {
     type = each.value.type
 
     dynamic "redirect" {
-      for_each = each.value.redirect_options[*]
+      for_each = each.value.redirect[*]
       content {
         host        = redirect.value.host
         path        = redirect.value.path
@@ -52,9 +52,9 @@ resource "aws_lb_listener_rule" "this" {
     content {
 
       dynamic "host_header" {
-        for_each = condition.value.host_header != null ? { 0 = condition.value.host_header } : {}
+        for_each = condition.value.host_header[*]
         content {
-          values = condition.value.host_header
+          values = condition.key
         }
       }
     }
